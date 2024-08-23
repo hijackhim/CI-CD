@@ -1,7 +1,4 @@
-output "instance_names" {
-  description = "The names of all SQL instances."
-  value       = { for k, v in google_sql_database_instance.sql_instances : k => v.name }
-}
+
 output "instance_names" {
   description = "The names of all SQL instances."
   value       = { for k, v in google_sql_database_instance.sql_instances : k => v.name }

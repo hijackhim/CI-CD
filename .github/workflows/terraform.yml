@@ -30,12 +30,11 @@ jobs:
     - name: Terraform Plan
       run: |
         terraform plan -out=tfplan \
-          -chdir=terraform \
           -var "project_id=${{ secrets.PROJECT_ID }}" \
           -var "region=${{ secrets.REGION }}" \
           -var "zone=${{ secrets.ZONE }}" \
           -var "credentials_file=${{ secrets.GCP_CREDENTIALS }}"
-
+      working-directory: terraform
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'

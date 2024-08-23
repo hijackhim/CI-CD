@@ -35,9 +35,8 @@ jobs:
       run: |
         export GOOGLE_CLOUD_KEYFILE_JSON=$HOME/gcp_credentials.json
         terraform plan -out=tfplan \
-          -var "project_id=${{ secrets.PROJECT_ID }}" \
-          -var "region=${{ secrets.REGION }}" \
-          -var "zone=${{ secrets.ZONE }}"
+          -var "project={project_id=***, region=***, zone=***}" \
+          -var "credentials_file=$HOME/gcp_credentials.json"
       working-directory: terraform
 
     - name: Terraform Apply

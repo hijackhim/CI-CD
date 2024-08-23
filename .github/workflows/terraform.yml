@@ -1,0 +1,49 @@
+name: Deploy to GCP using Terraform
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: Apply Terraform Configuration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.6
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Set GCP Project ID
+        run: echo "GCP_PROJECT=${{ secrets.PROJECT_ID }}" >> $GITHUB_ENV
+
+      - name: Set GCP Region
+        run: echo "GCP_REGION=${{ secrets.REGION }}" >> $GITHUB_ENV
+
+      - name: Set GCP Zone
+        run: echo "GCP_ZONE=${{ secrets.ZONE }}" >> $GITHUB_ENV
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Validate Terraform
+        run: terraform validate
+
+      - name: Plan Terraform
+        run: terraform plan -out=tfplan -var "project_id=${{ secrets.PROJECT_ID }}" -var "region=${{ secrets.REGION }}" -var "zone=${{ secrets.ZONE }}" -var "credentials_file=/path/to/your/credentials/file"
+
+      - name: Apply Terraform
+        run: terraform apply -auto-approve "tfplan"

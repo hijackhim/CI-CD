@@ -1,6 +1,6 @@
 name: Terraform
 
-on:
+on:   
   push:
     branches:
       - main
@@ -23,20 +23,26 @@ jobs:
       with:
         terraform_version: 1.0.0
 
+    - name: Set GCP Credentials
+      run: echo "${{ secrets.GCP_CREDENTIALS }}" > $HOME/gcp_credentials.json
+      shell: bash
+
     - name: Terraform Init
       run: terraform init
       working-directory: terraform
 
     - name: Terraform Plan
       run: |
+        export GOOGLE_CLOUD_KEYFILE_JSON=$HOME/gcp_credentials.json
         terraform plan -out=tfplan \
           -var "project_id=${{ secrets.PROJECT_ID }}" \
           -var "region=${{ secrets.REGION }}" \
-          -var "zone=${{ secrets.ZONE }}" \
-          -var "credentials_file=${{ secrets.GCP_CREDENTIALS }}"
+          -var "zone=${{ secrets.ZONE }}"
       working-directory: terraform
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve tfplan
+      run: |
+        export GOOGLE_CLOUD_KEYFILE_JSON=$HOME/gcp_credentials.json
+        terraform apply -auto-approve tfplan
       working-directory: terraform

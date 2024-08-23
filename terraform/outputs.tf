@@ -1,6 +1,6 @@
 output "instance_ips" {
   description = "The IP addresses of the SQL instances."
-  value       = [
+  value = [
     google_sql_database_instance.leader_board.first_ip_address,
     google_sql_database_instance.qa_databases.first_ip_address
   ]
@@ -8,7 +8,7 @@ output "instance_ips" {
 
 output "database_names" {
   description = "The names of the databases."
-  value       = [
+  value = [
     google_sql_database.leader_board_db.name,
     google_sql_database.qa_databases_db.name
   ]
@@ -16,7 +16,7 @@ output "database_names" {
 
 output "user_names" {
   description = "The names of the SQL users."
-  value       = [
+  value = [
     google_sql_user.leader_board_user.name,
     google_sql_user.qa_databases_user.name
   ]

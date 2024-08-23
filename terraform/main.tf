@@ -7,9 +7,9 @@ provider "google" {
 # Cloud SQL Instances
 # Leader Board SQL Instance
 resource "google_sql_database_instance" "leader_board" {
-  name               = var.leader_board_instance.instance_name
-  database_version   = var.leader_board_instance.database_version
-  region             = var.region
+  name                = var.leader_board_instance.instance_name
+  database_version    = var.leader_board_instance.database_version
+  region              = var.region
   deletion_protection = false
 
   settings {
@@ -62,9 +62,9 @@ resource "google_sql_user" "leader_board_user" {
 
 # QA Databases SQL Instance
 resource "google_sql_database_instance" "qa_databases" {
-  name               = var.qa_databases_instance.instance_name
-  database_version   = var.qa_databases_instance.database_version
-  region             = var.region
+  name                = var.qa_databases_instance.instance_name
+  database_version    = var.qa_databases_instance.database_version
+  region              = var.region
   deletion_protection = false
 
   settings {

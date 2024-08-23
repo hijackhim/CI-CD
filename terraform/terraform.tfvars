@@ -1,7 +1,7 @@
-project_id        = "linear-aviary-433112-m5"
-region            = "us-central1"
-zone              = "us-central1-f"
-credentials_file  = "/home/kumar_himanshu_singh28/terraform-replica/key.json"
+project_id       = "linear-aviary-433112-m5"
+region           = "us-central1"
+zone             = "us-central1-f"
+credentials_file = "/home/kumar_himanshu_singh28/terraform-replica/key.json"
 
 leader_board_instance = {
   instance_name     = "leader-board-1"
@@ -31,9 +31,9 @@ network = {
   private_network = "projects/linear-aviary-433112-m5/global/networks/default"
 }
 
-vpc_connector_region = "us-central1"
-vpc_connector_network = "default"
-vpc_connector_ip_cidr_range = "10.8.0.0/28"
+vpc_connector_region         = "us-central1"
+vpc_connector_network        = "default"
+vpc_connector_ip_cidr_range  = "10.8.0.0/28"
 vpc_connector_min_throughput = 200
 vpc_connector_max_throughput = 300
 

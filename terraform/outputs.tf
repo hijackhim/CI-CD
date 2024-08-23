@@ -1,22 +1,25 @@
-
-output "instance_names" {
-  description = "The names of all SQL instances."
-  value       = { for k, v in google_sql_database_instance.sql_instances : k => v.name }
-}
-
 output "instance_ips" {
-  description = "The IP addresses of all SQL instances."
-  value       = { for k, v in google_sql_database_instance.sql_instances : k => v.first_ip_address }
+  description = "The IP addresses of the SQL instances."
+  value       = [
+    google_sql_database_instance.leader_board.first_ip_address,
+    google_sql_database_instance.qa_databases.first_ip_address
+  ]
 }
 
 output "database_names" {
-  description = "The names of all databases."
-  value       = { for k, v in google_sql_database.sql_databases : k => v.name }
+  description = "The names of the databases."
+  value       = [
+    google_sql_database.leader_board_db.name,
+    google_sql_database.qa_databases_db.name
+  ]
 }
 
 output "user_names" {
-  description = "The names of all SQL users."
-  value       = { for k, v in google_sql_user.sql_users : k => v.name }
+  description = "The names of the SQL users."
+  value       = [
+    google_sql_user.leader_board_user.name,
+    google_sql_user.qa_databases_user.name
+  ]
 }
 
 output "vpc_connector_name" {
@@ -30,5 +33,8 @@ output "secret_name" {
 }
 
 output "app_engine_url" {
-  value = "https://${var.project.project_id}.appspot.com"
+  description = "The App Engine URL."
+  value       = "https://${var.project_id}.appspot.com"
 }
+
+

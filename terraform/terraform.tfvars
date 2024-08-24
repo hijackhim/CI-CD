@@ -17,7 +17,7 @@ leader_board_instance = {
 
 qa_databases_instance = {
   instance_name     = "qa-databases-1"
-  database_version  = "MYSQL_8_0_26"  
+  database_version  = "MYSQL_8_0_26"
   database_name     = "qa_db"
   sql_user_name     = "root"
   sql_user_password = "your_qa_password"

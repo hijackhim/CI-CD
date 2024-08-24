@@ -1,7 +1,7 @@
 project_id       = "linear-aviary-433112-m5"
 region           = "us-central1"
 zone             = "us-central1-f"
-credentials_file = "/home/kumar_himanshu_singh28/terraform-replica/key.json"
+credentials_file = "$HOME/key.json"
 
 leader_board_instance = {
   instance_name     = "leader-board-1"
@@ -17,7 +17,7 @@ leader_board_instance = {
 
 qa_databases_instance = {
   instance_name     = "qa-databases-1"
-  database_version  = "MYSQL_8_0_26"
+  database_version  = "MYSQL_8_0_26"  
   database_name     = "qa_db"
   sql_user_name     = "root"
   sql_user_password = "your_qa_password"

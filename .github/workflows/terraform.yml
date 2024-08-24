@@ -22,14 +22,11 @@ jobs:
         with:
           terraform_version: 1.4.0
 
-      - name: Setup Google Cloud credentials
-        run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > $HOME/key.json
-
       - name: Terraform Init
         working-directory: terraform
         run: terraform init
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/key.json
+          TF_VAR_credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Terraform Format
         working-directory: terraform
@@ -43,11 +40,11 @@ jobs:
         working-directory: terraform
         run: terraform plan -out=plan.tfplan
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/key.json
+          TF_VAR_credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Terraform Apply
         working-directory: terraform
         if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve plan.tfplan
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/key.json
+          TF_VAR_credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}

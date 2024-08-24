@@ -28,10 +28,10 @@ variable "zone" {
   default     = "us-central1-f"
 }
 
-variable "credentials_file" {
+variable "credentials_json" {
   description = "Path to the Google Cloud credentials file."
   type        = string
-  default     = "/home/kumar_himanshu_singh28/terraform-replica/key.json"
+  #default     = "/home/kumar_himanshu_singh28/terraform-replica/key.json"
 }
 
 

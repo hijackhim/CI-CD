@@ -28,8 +28,19 @@ jobs:
         with:
           terraform_version: 1.4.0
 
+      - name: Check if Terraform state artifact exists
+        id: artifact-check
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listArtifactsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            return artifacts.data.artifacts.some(artifact => artifact.name === 'terraform-state');
+
       - name: Download Terraform state
-        if: ${{ github.event.inputs.destroy != 'true' }}
+        if: steps.artifact-check.outputs.exists == 'true'
         uses: actions/download-artifact@v2
         with:
           name: terraform-state

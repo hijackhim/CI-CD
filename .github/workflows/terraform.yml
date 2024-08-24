@@ -7,12 +7,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      destroy:
-        description: 'Set to true to trigger terraform destroy'
-        required: false
-        default: 'false'
 
 jobs:
   terraform:
@@ -27,24 +21,6 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.4.0
-
-      - name: Check if Terraform state artifact exists
-        id: artifact-check
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const artifacts = await github.rest.actions.listArtifactsForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-            return artifacts.data.artifacts.some(artifact => artifact.name === 'terraform-state');
-
-      - name: Download Terraform state
-        if: steps.artifact-check.outputs.exists == 'true'
-        uses: actions/download-artifact@v2
-        with:
-          name: terraform-state
-          path: terraform/
 
       - name: Terraform Init
         working-directory: terraform
@@ -68,45 +44,7 @@ jobs:
 
       - name: Terraform Apply
         working-directory: terraform
-        if: github.ref == 'refs/heads/main' && github.event.inputs.destroy != 'true'
+        if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve plan.tfplan
-        env:
-          TF_VAR_credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-      - name: Upload Terraform state
-        if: ${{ github.event.inputs.destroy != 'true' }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: terraform-state
-          path: terraform/terraform.tfstate
-
-  destroy:
-    name: 'Terraform Destroy'
-    runs-on: ubuntu-latest
-    if: github.event.inputs.destroy == 'true'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.4.0
-
-      - name: Download Terraform state
-        uses: actions/download-artifact@v2
-        with:
-          name: terraform-state
-          path: terraform/
-
-      - name: Terraform Init
-        working-directory: terraform
-        run: terraform init
-        env:
-          TF_VAR_credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-      - name: Terraform Destroy
-        working-directory: terraform
-        run: terraform destroy -auto-approve
         env:
           TF_VAR_credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}

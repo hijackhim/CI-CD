@@ -150,6 +150,26 @@ resource "google_secret_manager_secret_iam_binding" "secret_access" {
   ]
 }
 
+resource "google_cloudfunctions_function" "function" {
+  name        = "function-test"
+  description = "My function"
+  runtime     = "nodejs20"
+
+  source_archive_bucket = var.bucket_name
+  source_archive_object = var.source_archive_path
+  entry_point           = "helloWorld"
+  trigger_http          = true
+
+  service_account_email = "${var.project_id}@appspot.gserviceaccount.com"
+  #vpc_connector         = "projects/${var.project_id}/locations/${var.region}/connectors/my-serverless-connector"
+
+  environment_variables = {
+    "GCLOUD_PROJECT" = var.project_id
+  }
+
+}
+
+
 # Create the App Engine application
 #resource "google_app_engine_application" "app" {
 #  project     = var.project.project_id

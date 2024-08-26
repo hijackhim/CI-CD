@@ -139,3 +139,12 @@ variable "service_account_email" {
   default     = "secretmanager@linear-aviary-433112-m5.iam.gserviceaccount.com"
 }
 
+variable "bucket_name" {
+  description = "The GCS bucket containing the function source code."
+  default     = "gcf-sources-554795506394-us-central1"
+}
+
+variable "source_archive_path" {
+  description = "The path to the Cloud Function source archive in the bucket."
+  default     = "function-2-da181dbb-6520-4f8c-996b-cda8d622ab1e/version-1/function-source.zip"
+}
